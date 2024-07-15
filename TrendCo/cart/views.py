@@ -47,6 +47,8 @@ def cart(request):
         total = 0
         for cart_item in cart_items:
             total += (cart_item.product.product_price * cart_item.quantity)
+        tax = (2 * total) / 100
+        grand_total = total + tax
     except Cart.DoesNotExist:
         cart = None
         cart_items = []
@@ -54,6 +56,8 @@ def cart(request):
     context = {
         'cart_items': cart_items,
         'total': total,
+        'tax': tax,
+        'grand_total': grand_total,
     }
 
     return render(request, 'store/cart.html', context)
