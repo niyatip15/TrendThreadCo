@@ -132,7 +132,7 @@
                             <del class="price-old"></del>
                         </div> <!-- price-wrap.// -->
                     </div>
-                    <a href="#" class="btn btn-block btn-primary">Add to cart</a>
+                    <a href="{% url 'add_cart' store_product.slug %}" class="btn  btn-primary"> <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i></a>
                 </figcaption>
             </figure>
         </div> <!-- col.// -->
