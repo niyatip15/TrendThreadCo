@@ -4,7 +4,7 @@ from product_categories.models import Category
 # Create your models here.
 class Products(models.Model):
     product_name = models.CharField(max_length=200, unique=True)
-    product_slug = models.SlugField(max_length=200,unique=True)
+    slug = models.SlugField(max_length=200,unique=True)
     product_desc = models.TextField(max_length=500,blank=True)
     product_price = models.IntegerField()
     product_images = models.ImageField(upload_to='product_images/')
