@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, redirect, render
-from store.models import Products
+from store.models import Products,ProductVariation
 from . models import Cart, CartItems
 
 def _cart_id(request):
@@ -10,17 +10,31 @@ def _cart_id(request):
     return cart_id
 
 def add_cart(request, product_slug):
-    color = request.GET['color']
-    size = request.GET['size']
-    print(f'user selected {color} and {size}')
     product = get_object_or_404(Products, slug=product_slug)
     
+    if request.method == 'POST':
+        selected_variation = []
+        for item in request.POST:
+            key = item
+            value = request.POST[key]
+            try:
+                variation = ProductVariation.objects.get(product=product,variation_category__iexact=key, variation_value__iexact=value, product__slug=product_slug)
+                selected_variation.append(variation)  
+                print(f"Found variation: {variation} for key: {key}, value: {value}")
+            except ProductVariation.DoesNotExist:
+                print(f"ProductVariation does not exist for key: {key}, value: {value}")
+                pass  
+
+        print("Selected variations:", selected_variation)
+
+    print(f"Product found: {product}")
+
     try:
         cart = Cart.objects.get(cart_id=_cart_id(request))
+        print(f"Cart found: {cart}")
     except Cart.DoesNotExist:
         cart = Cart.objects.create(cart_id=_cart_id(request))
-    
-    # Check if the product is already in the cart
+        print(f"New cart created: {cart}")
     cart_item, created = CartItems.objects.get_or_create(cart=cart, product=product, defaults={'quantity': 0})
     
     if not created:
