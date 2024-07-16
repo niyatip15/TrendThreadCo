@@ -24,12 +24,12 @@ variation_category_choice = (
     ('size','size'),
 )
 class ProductVariation(models.Model):
-    product = models.ForeignKey(Products,on_delete=models.CASCADE)
+    product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='variations')
     variation_category = models.CharField(max_length=200, choices= variation_category_choice)
     variation_value = models.CharField(max_length=200)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return self.product.product_name
+        return f"{self.product.product_name} - {self.variation_category} - {self.variation_value}"
     
