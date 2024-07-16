@@ -1,9 +1,25 @@
 from django.shortcuts import render
 from .forms  import RegistrationForm
+from .models import CustomUser
 
 # Create your views here.
 def register(request):
-    form = RegistrationForm()
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            contact_number = form.cleaned_data['contact_number']
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            user = CustomUser.objects.create_user(
+                first_name=first_name, last_name=last_name, email=email,
+                password=password
+            )
+            user.contact_number = contact_number
+            user.save()
+    else:
+        form = RegistrationForm()       
     context = {
         'form': form
     }
