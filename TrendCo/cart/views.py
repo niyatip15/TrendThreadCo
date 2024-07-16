@@ -83,3 +83,9 @@ def decrement_cart_item(request, cart_item_id):
         cart_item.delete() 
 
     return redirect('cart')
+
+
+def remove_cart_item(request, cart_item_id):
+    cart_item = get_object_or_404(CartItems, id=cart_item_id)
+    cart_item.delete()
+    return redirect('cart')
