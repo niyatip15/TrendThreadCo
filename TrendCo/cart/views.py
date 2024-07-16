@@ -10,32 +10,26 @@ def _cart_id(request):
     return cart_id
 
 def add_cart(request, product_slug):
-    print("Entering add_cart function")
-    
+    color = request.GET['color']
+    size = request.GET['size']
+    print(f'user selected {color} and {size}')
     product = get_object_or_404(Products, slug=product_slug)
-    print(f"Product: {product}")
     
     try:
         cart = Cart.objects.get(cart_id=_cart_id(request))
-        print(f"Cart found: {cart}")
     except Cart.DoesNotExist:
         cart = Cart.objects.create(cart_id=_cart_id(request))
-        print(f"New cart created: {cart}")
     
     # Check if the product is already in the cart
     cart_item, created = CartItems.objects.get_or_create(cart=cart, product=product, defaults={'quantity': 0})
-    print(f"Cart Item created: {cart_item}, Created: {created}")
     
     if not created:
         cart_item.quantity += 1
         cart_item.save()
-        print(f"Quantity updated: {cart_item.quantity}")
     else:
         cart_item.quantity = 1
         cart_item.save()
-        print(f"New item added to cart with quantity: {cart_item.quantity}")
     
-    print("Redirecting to cart")
     return redirect('cart')
 
 
