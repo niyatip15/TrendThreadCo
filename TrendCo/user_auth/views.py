@@ -61,8 +61,12 @@ def login(request):
             return redirect('login')
     return render(request,'user_auth/login.html')
 
+@login_required(login_url = 'login')
 def logout(request):
-    return render(request,'user_auth/logout.html')
+    auth.logout(request)
+    messages.success(request, 'You are logged out.')
+    return redirect('login')
+
 
 
 def activate(request,uidb64,token):
@@ -79,3 +83,9 @@ def activate(request,uidb64,token):
     else:
         messages.error(request,'Invalid Activation Link')
         return redirect('register')
+    
+    
+@login_required(login_url='login')
+def dashboard(request):
+    context = {}
+    return render(request, 'user_auth/dashboard.html', context)
