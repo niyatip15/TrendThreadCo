@@ -9,7 +9,7 @@ class Products(models.Model):
     product_price = models.IntegerField()
     product_images = models.ImageField(upload_to='product_images/')
     in_stock = models.IntegerField()
-    is_available = models.BooleanField(default=False)
+    is_available = models.BooleanField(default=True)
     product_category = models.ForeignKey(Category,on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now_add=True)

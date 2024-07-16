@@ -14,7 +14,7 @@ class CartItems(models.Model):
     variations = models.ManyToManyField(ProductVariation,blank=True)
     cart = models.ForeignKey(Cart,on_delete=models.CASCADE)
     quantity = models.IntegerField()
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     
     def sub_total(self):
         return self.product.product_price * self.quantity

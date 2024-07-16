@@ -1,0 +1,26 @@
+# Ignore virtual environment
+/env/
+
+# Ignore compiled Python files
+*.pyc
+
+# Ignore SQLite database
+db.sqlite3
+
+
+**/migrations/
+**/wsgi.py
+
+# Ignore __init__.py files
+**/__init__.py
+
+**/asgi.py
+
+# Ignore Django manage.py file
+**/manage.py
+
+# Ignore application directories
+**/app/
+
+# Ignore test directories
+**/test/

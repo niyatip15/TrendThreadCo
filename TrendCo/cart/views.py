@@ -11,39 +11,33 @@ def _cart_id(request):
 
 def add_cart(request, product_slug):
     product = get_object_or_404(Products, slug=product_slug)
-    
     if request.method == 'POST':
-        selected_variation = []
+        selected_variation = {}
         for item in request.POST:
             key = item
             value = request.POST[key]
             try:
                 variation = ProductVariation.objects.get(product=product,variation_category__iexact=key, variation_value__iexact=value, product__slug=product_slug)
-                selected_variation.append(variation)  
-                print(f"Found variation: {variation} for key: {key}, value: {value}")
+                selected_variation[key] = variation
             except ProductVariation.DoesNotExist:
-                print(f"ProductVariation does not exist for key: {key}, value: {value}")
-                pass  
-
-        print("Selected variations:", selected_variation)
-
-    print(f"Product found: {product}")
-
+                pass
     try:
         cart = Cart.objects.get(cart_id=_cart_id(request))
-        print(f"Cart found: {cart}")
     except Cart.DoesNotExist:
         cart = Cart.objects.create(cart_id=_cart_id(request))
-        print(f"New cart created: {cart}")
     cart_item, created = CartItems.objects.get_or_create(cart=cart, product=product, defaults={'quantity': 0})
-    
+
+    if selected_variation:
+        cart_item.variations.clear() 
+        for key, variation in selected_variation.items():
+            cart_item.variations.add(variation)
+
     if not created:
         cart_item.quantity += 1
         cart_item.save()
     else:
         cart_item.quantity = 1
         cart_item.save()
-    
     return redirect('cart')
 
 
