@@ -1,7 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from .forms  import RegistrationForm
 from .models import CustomUser
-
+from django.contrib import messages
 # Create your views here.
 def register(request):
     if request.method == 'POST':
@@ -18,6 +18,8 @@ def register(request):
             )
             user.contact_number = contact_number
             user.save()
+            messages.success(request,'You are registered Successfully.')
+            return redirect('register')
     else:
         form = RegistrationForm()       
     context = {
