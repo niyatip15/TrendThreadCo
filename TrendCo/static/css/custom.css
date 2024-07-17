@@ -1,0 +1,24 @@
+.rate {
+    display: inline-block;
+  }
+  
+  .rate > input {
+    display: none;
+  }
+  
+  .rate > label {
+    float: right;
+    cursor: pointer;
+    font-size: 1.5rem; /* Adjust as needed */
+    color: #ccc; /* Default star color */
+  }
+  
+  .rate > label:before {
+    content: '\2605'; /* Unicode character for star */
+    padding: 0.1rem; /* Adjust spacing */
+  }
+  
+  .rate > input:checked ~ label {
+    color: #ffa500; /* Active star color */
+  }
+  
