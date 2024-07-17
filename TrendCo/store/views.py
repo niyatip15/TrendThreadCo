@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404,redirect
-from store.models import Products,ProductVariation
+from store.models import Products,ProductVariation,ProductGallery
 from product_categories.models import Category
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -50,6 +50,7 @@ def product_detail(request, category_slug, product_slug):
             orderproduct = None
 
         reviews = ReviewRating.objects.filter(product=product)
+        product_gallery = ProductGallery.objects.filter(product_id=product.id)
         context = {
             'product': product,
             'color_variations': color_variations,
@@ -57,6 +58,7 @@ def product_detail(request, category_slug, product_slug):
             'all_variations': product_variations,
             'orderproduct': orderproduct,
             'reviews': reviews,
+            'product_gallery' : product_gallery
         }
         return render(request, 'store/product_detail.html', context)
     except Exception as e:
