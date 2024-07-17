@@ -34,29 +34,34 @@ def store(request,category_slug = None):
 def product_detail(request, category_slug, product_slug):
     try:
         category = get_object_or_404(Category, slug=category_slug)
-        product = get_object_or_404(Products, product_category=category, slug=product_slug, is_available=True)        
+        product = get_object_or_404(Products, product_category=category, slug=product_slug, is_available=True)
+
         product_variations = product.variations.all()
-        color_variations = product_variations.filter(variation_category='color', is_active=True)     
-        size_variations = product_variations.filter(variation_category='size', is_active=True)   
-        all_variations = ProductVariation.objects.all()  
+        color_variations = product_variations.filter(variation_category='color', is_active=True)
+        size_variations = product_variations.filter(variation_category='size', is_active=True)
+        all_variations = ProductVariation.objects.all()
+
         if request.user.is_authenticated:
             try:
                 orderproduct = OrderItems.objects.filter(user=request.user, product_id=product.id).exists()
             except OrderItems.DoesNotExist:
                 orderproduct = None
         else:
-            orderproduct = None      
+            orderproduct = None
+
+        reviews = ReviewRating.objects.filter(product=product)
         context = {
             'product': product,
             'color_variations': color_variations,
             'size_variations': size_variations,
             'all_variations': product_variations,
-            'orderproduct' : orderproduct
+            'orderproduct': orderproduct,
+            'reviews': reviews,
         }
         return render(request, 'store/product_detail.html', context)
     except Exception as e:
-        print(e,'===================')
-        return render(request,{'error_message': str(e)})
+        print(f"Error: {e}")
+        return render(request, 'error.html', {'error_message': str(e)})
 
 def search(request):
     if 'keyword' in request.GET:

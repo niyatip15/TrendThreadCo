@@ -9,16 +9,49 @@
   .rate > label {
     float: right;
     cursor: pointer;
-    font-size: 1.5rem; /* Adjust as needed */
-    color: #ccc; /* Default star color */
+    font-size: 1.5rem; 
+    /* color: #ccc;  */
   }
   
   .rate > label:before {
-    content: '\2605'; /* Unicode character for star */
-    padding: 0.1rem; /* Adjust spacing */
+    content: '\2605';
+    padding: 0.1rem; 
   }
   
   .rate > input:checked ~ label {
-    color: #ffa500; /* Active star color */
+    color: #ffa500; 
   }
   
+
+  .rate {
+    display: inline-block;
+}
+
+.rate > input {
+    display: none;
+}
+
+.rate > label {
+    float: right;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: #ccc; 
+}
+
+.rate > label:before {
+    content: '\2605';
+    padding: 0.1rem;
+}
+
+.rate > input:checked ~ label {
+    color: #ffa500;
+}
+
+.star-rating {
+    color: #ffa500; 
+    font-size: 20px;
+}
+
+.star-rating i {
+    margin-right: 2px;
+}
