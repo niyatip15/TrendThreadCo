@@ -114,10 +114,15 @@
             <textarea name="review" id="" rows="5" class="form-control"></textarea>
             <br>
             {% if user.is_authenticated %}
-            <input type="submit" value="Submit Review" class="btn btn-primary">
+              {% if orderproduct %}
+                <input type="submit" value="Submit Review" class="btn btn-primary">
+              {% else %}
+                <p>You must purchase this product to write a review.</p>
+              {% endif %}
             {% else %}
-            <p>You must login to write a review. <span><a href="{% url 'login' %}">Login</a></span> </p>
+              <p>You must login to write a review. <span><a href="{% url 'login' %}">Login</a></span></p>
             {% endif %}
+        
           </div>
           {% include 'includes/alert.html' %}
         </form>

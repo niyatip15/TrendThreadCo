@@ -6,6 +6,7 @@ from django.db.models import Q
 from .models import ReviewRating
 from .forms import ReviewRatingForm
 from django.contrib import messages
+from orders.models import OrderItems
 # Create your views here.
 def store(request,category_slug = None):
     context = {}
@@ -37,12 +38,20 @@ def product_detail(request, category_slug, product_slug):
         product_variations = product.variations.all()
         color_variations = product_variations.filter(variation_category='color', is_active=True)     
         size_variations = product_variations.filter(variation_category='size', is_active=True)   
-        all_variations = ProductVariation.objects.all()        
+        all_variations = ProductVariation.objects.all()  
+        if request.user.is_authenticated:
+            try:
+                orderproduct = OrderItems.objects.filter(user=request.user, product_id=product.id).exists()
+            except OrderItems.DoesNotExist:
+                orderproduct = None
+        else:
+            orderproduct = None      
         context = {
             'product': product,
             'color_variations': color_variations,
             'size_variations': size_variations,
             'all_variations': product_variations,
+            'orderproduct' : orderproduct
         }
         return render(request, 'store/product_detail.html', context)
     except Exception as e:
