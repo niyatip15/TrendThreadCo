@@ -43,7 +43,7 @@ class Order(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return self.user.first_name
+        return self.first_name
     
 class OrderItems(models.Model):
     order = models.ForeignKey(Order,on_delete=models.CASCADE)
