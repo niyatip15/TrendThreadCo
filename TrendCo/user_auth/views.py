@@ -9,7 +9,8 @@ from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import EmailMessage
 from django.contrib.auth.decorators import login_required
-
+from cart.models import *
+from cart.views import _cart_id
 
 # Create your views here.
 def register(request):
@@ -52,6 +53,20 @@ def login(request):
         email = request.POST['email']
         password = request.POST['password']
         user = auth.authenticate(email=email, password = password)
+        try:
+            print('TRY ')
+            cart = Cart.objects.get(cart_id=_cart_id(request))
+            cart_item_exists = CartItems.objects.filter(cart = cart).exists()
+            if cart_item_exists:
+                print(cart_item_exists)
+                cart_items = CartItems.objects.filter(cart=cart)
+                print(cart_items,'hey=======')
+                for cart_item in cart_items:
+                    cart_item.user = user
+                    cart_item.save()
+        except:
+            print('Entering in exception...')
+            pass
         if user is not None:
             auth.login(request, user)
             messages.success(request,'Logged in successful')
