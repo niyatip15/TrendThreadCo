@@ -91,6 +91,7 @@
         <form action="{% url 'submit_review' product.id %}" method="POST">
           {% csrf_token %}
           <h5>Write your Review!</h5>
+
           <div>
             <label>Rate this product</label>
             <br>
@@ -128,7 +129,18 @@
         </form>
         <br>
         <header class="section-heading">
-          <h3>Customer Reviews</h3>
+          <h3>Customer Reviews </h3>
+          <div class="rating-star">
+            <span>
+              <i class="fa fa-star{% if product.averageReview < 0.5 %}-o{% elif product.averageReview >= 0.5 and product.averageReview < 1 %}-half-o {% endif %}" aria-hidden="true"></i>
+              <i class="fa fa-star{% if product.averageReview < 1.5 %}-o{% elif product.averageReview >= 1.5 and product.averageReview < 2 %}-half-o {% endif %}" aria-hidden="true"></i>
+              <i class="fa fa-star{% if product.averageReview < 2.5 %}-o{% elif product.averageReview >= 2.5 and product.averageReview < 3 %}-half-o {% endif %}" aria-hidden="true"></i>
+              <i class="fa fa-star{% if product.averageReview < 3.5 %}-o{% elif product.averageReview >= 3.5 and product.averageReview < 4 %}-half-o {% endif %}" aria-hidden="true"></i>
+              <i class="fa fa-star{% if product.averageReview < 4.5 %}-o{% elif product.averageReview >= 4.5 and product.averageReview < 5 %}-half-o {% endif %}" aria-hidden="true"></i>
+          <span>{{product.countReview}} reviews</span>
+              </span>
+          </div>
+        
         </header>
         {% for review in reviews %}
         <article class="box mb-3">
