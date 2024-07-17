@@ -65,8 +65,11 @@ def add_cart(request, product_slug):
 
 def cart(request):
     try:
-        cart = Cart.objects.get(cart_id=_cart_id(request))
-        cart_items = CartItems.objects.filter(cart=cart, is_active=True)
+        if request.user.is_authenticated:
+            cart_items = CartItems.objects.filter(user = request.user,is_active=True)
+        else:
+            cart = Cart.objects.get(cart_id=_cart_id(request))
+            cart_items = CartItems.objects.filter(cart=cart, is_active=True)
         total = sum(cart_item.sub_total() for cart_item in cart_items)
         tax = (2 * total) / 100
         grand_total = total + tax
