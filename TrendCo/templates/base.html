@@ -48,3 +48,9 @@ $(document).ready(function() {
 
     {% endblock %}
     {% include 'includes/footer.html' %}
+
+    {% block scripts %}
+    {% endblock scripts %}
+    <script src="{% static 'js/checkout.js' %}"></script>
+</body>
+</html>

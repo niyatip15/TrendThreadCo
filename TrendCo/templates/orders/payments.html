@@ -110,7 +110,7 @@
 
 
 						<div id="paypal-button-container">
-							<!-- PayPal Button Will Load -->
+						
 						</div>
 
 					</div> <!-- card-body.// -->
@@ -131,4 +131,33 @@
 
 
 
+{% endblock %}
+{% block scripts %}
+<script src="https://www.paypal.com/sdk/js?client-id=AbvIK4awC3mZIaaUSKbHiVFr_pF_DnlT04iF52EAOp-YVpmfnAMCMPEy7fenv0OAAme4vHffZbkN_YUn&currency=USD"></script>
+<script>
+	paypal.Buttons({
+		style: {
+			color: 'blue',
+			shape: 'rect',
+			label: 'pay',
+			height: 40
+		},
+		createOrder: function(data, actions){
+			return actions.order.create({
+				purchase_units: [{
+					amount: {
+						value: '88.09'
+					}
+				}]
+			});
+		},
+
+		onApprove: function(data,actions){
+			return actions.order.capture().then(function(details){
+				console.log(details)
+				alert('Transaction completed by' + details.payer.name.given_name + '!')
+			});
+		}
+	}).render('#paypal-button-container');
+</script>
 {% endblock %}
