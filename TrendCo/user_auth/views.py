@@ -52,29 +52,36 @@ def login(request):
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
-        user = auth.authenticate(email=email, password = password)
-        try:
-            print('TRY ')
-            cart = Cart.objects.get(cart_id=_cart_id(request))
-            cart_item_exists = CartItems.objects.filter(cart = cart).exists()
-            if cart_item_exists:
-                print(cart_item_exists)
-                cart_items = CartItems.objects.filter(cart=cart)
-                print(cart_items,'hey=======')
-                for cart_item in cart_items:
-                    cart_item.user = user
-                    cart_item.save()
-        except:
-            print('Entering in exception...')
-            pass
+        user = auth.authenticate(email=email, password=password)
+        
         if user is not None:
+            try:
+                cart = Cart.objects.get(cart_id=_cart_id(request))
+                cart_items = CartItems.objects.filter(cart=cart)
+                
+                for item in cart_items:
+                    existing_item = CartItems.objects.filter(user=user, product=item.product).first()
+                    if existing_item:
+                        existing_item.quantity += item.quantity
+                        existing_item.save()
+                        item.delete()
+                    else:
+                        item.user = user
+                        item.cart = None
+                        item.save()
+                
+                cart.delete()  # Delete the guest cart after merging
+            except Cart.DoesNotExist:
+                pass
+            
             auth.login(request, user)
-            messages.success(request,'Logged in successful')
+            messages.success(request, 'Logged in successfully')
             return redirect('home')
         else:
-            messages.error(request,'Invalid credentials')
+            messages.error(request, 'Invalid credentials')
             return redirect('login')
-    return render(request,'user_auth/login.html')
+    
+    return render(request, 'user_auth/login.html')
 
 @login_required(login_url = 'login')
 def logout(request):
