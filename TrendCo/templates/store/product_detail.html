@@ -86,11 +86,9 @@
 
     <div class="row">
       <div class="col-md-9">
-        <header class="section-heading">
-          <h3>Customer Reviews</h3>
-        </header>
 
-        <form action="" method="POST">
+
+        <form action="{% url 'submit_review' product.id %}" method="POST">
           {% csrf_token %}
           <h5>Write your Review!</h5>
           <div>
@@ -108,16 +106,25 @@
               <input type="radio" id="star1" name="rating" value="1" />
               <label for="star1" title="1 star"></label>
             </div>
-            
+            <br>
             Title:
             <input type="text" name="subject" id="" class="form-control">
             <br>
             Review:
             <textarea name="review" id="" rows="5" class="form-control"></textarea>
             <br>
+            {% if user.is_authenticated %}
             <input type="submit" value="Submit Review" class="btn btn-primary">
+            {% else %}
+            <p>You must login to write a review. <span><a href="{% url 'login' %}">Login</a></span> </p>
+            {% endif %}
           </div>
+          {% include 'includes/alert.html' %}
         </form>
+        <br>
+        <header class="section-heading">
+          <h3>Customer Reviews</h3>
+        </header>
 
         <article class="box mb-3">
           <div class="icontext w-100">

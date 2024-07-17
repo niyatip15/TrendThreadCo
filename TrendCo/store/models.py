@@ -47,4 +47,4 @@ class ReviewRating(models.Model):
     
     
     def __str__(self):
-        return self.product
+        return self.review
