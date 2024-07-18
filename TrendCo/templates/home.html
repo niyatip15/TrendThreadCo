@@ -21,7 +21,7 @@
 	<br>
 <div class="row">
 	{% for product in products %}
-	<div class="col-md-3">
+	<div class="col-md-3" style="text-align: center;">
 		<div class="card card-product-grid">
 			<a href="{% url 'product_detail' category_slug=product.product_category.slug product_slug=product.slug %}" class="img-wrap">
 				<img src="{{ product.product_images.url }}">
