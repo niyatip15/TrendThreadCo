@@ -14,5 +14,5 @@ urlpatterns = [
     
     path('my_orders/',views.myOrders,name='my_orders'),
     path('edit_profile/', views.edit_profile, name='edit_profile'),
-    # path('change-password/',views.changePassword,name='change-password')
+    path('change_password/', views.change_password, name='change_password'),
 ]

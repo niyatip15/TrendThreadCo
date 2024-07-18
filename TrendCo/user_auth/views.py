@@ -147,6 +147,33 @@ def edit_profile(request):
         'userprofile': userprofile,
     }
     return render(request, 'user_auth/edit_profile.html', context)
+
+@login_required(login_url='login')
+def change_password(request):
+    if request.method == 'POST':
+        current_password = request.POST['current_password']
+        new_password = request.POST['new_password']
+        confirm_password = request.POST['confirm_password']
+
+        user = CustomUser.objects.get(email__exact=request.user.email)
+
+        if new_password == confirm_password:
+            success = user.check_password(current_password)
+            if success:
+                user.set_password(new_password)
+                user.save()
+                # auth.logout(request)
+                messages.success(request, 'Password updated successfully.')
+                return redirect('change_password')
+            else:
+                messages.error(request, 'Please enter valid current password')
+                return redirect('change_password')
+        else:
+            messages.error(request, 'Password does not match!')
+            return redirect('change_password')
+    return render(request, 'user_auth/change_password.html')
+
+
 def forgotPassword(request):
     if request.method == 'POST':
         email = request.POST['email']
