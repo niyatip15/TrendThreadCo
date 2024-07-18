@@ -1,6 +1,6 @@
-from django.shortcuts import render,redirect, HttpResponse
-from .forms  import RegistrationForm
-from .models import CustomUser
+from django.shortcuts import render,redirect, HttpResponse,get_object_or_404
+from .forms  import RegistrationForm,UserProfileForm,UserForm
+from .models import CustomUser,UserProfile
 from django.contrib import messages, auth
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
@@ -117,14 +117,36 @@ def dashboard(request):
     }
     return render(request, 'user_auth/dashboard.html',context)
 
+
+@login_required(login_url='login')
 def myOrders(request):
     my_orders = Order.objects.filter(user = request.user,is_ordered=True).order_by('-created_at')
-    print(my_orders,'heya')
     context = {
         'orders':my_orders
     }
     return render(request,'user_auth/myorders.html',context)
 
+
+@login_required(login_url='login')
+def edit_profile(request):
+    userprofile, created = UserProfile.objects.get_or_create(user=request.user)
+    if request.method == 'POST':
+        user_form = UserForm(request.POST, instance=request.user)
+        profile_form = UserProfileForm(request.POST, request.FILES, instance=userprofile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, 'Your profile has been updated.')
+            return redirect('edit_profile')
+    else:
+        user_form = UserForm(instance=request.user)
+        profile_form = UserProfileForm(instance=userprofile)
+    context = {
+        'user_form': user_form,
+        'profile_form': profile_form,
+        'userprofile': userprofile,
+    }
+    return render(request, 'user_auth/edit_profile.html', context)
 def forgotPassword(request):
     if request.method == 'POST':
         email = request.POST['email']

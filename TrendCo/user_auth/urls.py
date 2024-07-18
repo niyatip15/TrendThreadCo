@@ -13,6 +13,6 @@ urlpatterns = [
     path('resetPassword/', views.resetPassword, name='resetPassword'),
     
     path('my_orders/',views.myOrders,name='my_orders'),
-    # path('edit-profile/',views.editProfile,name='edit-profile'),
-    # path('change-passwoed/',views.changePassword,name='change-password')
+    path('edit_profile/', views.edit_profile, name='edit_profile'),
+    # path('change-password/',views.changePassword,name='change-password')
 ]
