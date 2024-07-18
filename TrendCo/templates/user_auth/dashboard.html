@@ -16,7 +16,7 @@
                   <div class="card-body">
                     <h5 class="card-title">Total Orders</h5>
                     <h4>{{orders}}</h4>
-                    <a href="">View Orders</a>
+                    <a href="{% url 'my_orders' %}">View Orders</a>
                   </div>
                 </div>
              </div>
@@ -25,8 +25,8 @@
                 <div class="card-body" style="text-align: center;">
                  <img src="https://www.w3schools.com/howto/img_avatar.png" alt="User Profile Picture" width="50" height="50" style="border-radius: 50%;">
                   <br><br>
-                 <p class="mb-0">{{user.email}}</p>
-                 <p>{{user.contact_number}}</p>
+                 <p class="mb-0"><strong>Email: </strong>{{user.email}}</p>
+                 <p><strong>Contact Number: </strong>{{user.contact_number}}</p>
                 </div>
               </div>
            </div>

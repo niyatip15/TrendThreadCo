@@ -9,23 +9,24 @@
         <div class="container">
     <div class="row align-items-center">
         <div class="col-lg-2 col-md-3 col-6">
-            <a href="{% url 'home' %}" class="brand-wrap">
-                <img class="logo" src="{% static 'images/b1.png' %}">
-            </a> <!-- brand-wrap.// -->
+           
         </div>
-        <div class="col-lg col-sm col-md col-6 flex-grow-0">
-            <div class="category-wrap dropdown d-inline-block float-right">
+        <div class="col-lg-2 col-sm-4 col-md-3 col-6">
+            <div class="category-wrap dropdown d-inline-block">
                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> 
                     <i class="fa fa-bars"></i> All category 
                 </button>
                 <div class="dropdown-menu">
                     {% for category in category_links %}
-                    <a class="dropdown-item" href="{{category.get_url}}">{{category.category_name}}</a>
+                    <a class="dropdown-item" href="{{ category.get_url }}">{{ category.category_name }}</a>
                     {% endfor %}
                 </div>
-            </div>  <!-- category-wrap.// -->
-        </div> <!-- col.// -->
-        <a href="{% url 'store' %}" class="btn btn-outline-primary">Store</a>
+            </div>
+        </div>
+
+        
+        
+        <a href="{% url 'store' %}" class="btn btn-outline-primary">Shop</a>
         <div class="col-lg  col-md-6 col-sm-12 col">
             <form action="{% url 'search' %}" class="search" method="get">
                 <div class="input-group w-100">

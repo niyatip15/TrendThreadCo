@@ -117,6 +117,13 @@ def dashboard(request):
     }
     return render(request, 'user_auth/dashboard.html',context)
 
+def myOrders(request):
+    my_orders = Order.objects.filter(user = request.user,is_ordered=True).order_by('-created_at')
+    print(my_orders,'heya')
+    context = {
+        'orders':my_orders
+    }
+    return render(request,'user_auth/myorders.html',context)
 
 def forgotPassword(request):
     if request.method == 'POST':

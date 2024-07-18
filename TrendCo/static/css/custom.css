@@ -70,3 +70,19 @@ ul.thumb li img{
   height: 80px;
   border: 1px solid grey;
 }
+
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+}
+
+.pagination {
+  display: flex;
+  list-style: none;
+  padding: 0;
+}
+
+.page-item {
+  margin: 0 2px;
+}
