@@ -10,6 +10,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import EmailMessage
 from django.contrib.auth.decorators import login_required
 from cart.models import *
+from orders.models import *
 from cart.views import _cart_id
 
 # Create your views here.
@@ -109,8 +110,12 @@ def activate(request,uidb64,token):
     
 @login_required(login_url='login')
 def dashboard(request):
-    context = {}
-    return render(request, 'user_auth/dashboard.html', context)
+    orders = Order.objects.order_by('-created_at').filter(user_id = request.user.id, is_ordered = True)
+    order_count = orders.count()
+    context = {
+        'orders':order_count
+    }
+    return render(request, 'user_auth/dashboard.html',context)
 
 
 def forgotPassword(request):
